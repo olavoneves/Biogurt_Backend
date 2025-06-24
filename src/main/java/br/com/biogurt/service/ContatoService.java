@@ -9,9 +9,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class ContatoService {
 
+    private final ContatoRepository repository;
+    private final EmailService emailService;
+
     @Autowired
-    private ContatoRepository repository;
-    private EmailService emailService;
+    public ContatoService(ContatoRepository repository, EmailService emailService) {
+        this.repository = repository;
+        this.emailService = emailService;
+    }
 
     public void processarContato(ContatoDTO dto) {
         Contato contato = repository.save(dto.toEntity());

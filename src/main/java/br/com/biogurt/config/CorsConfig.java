@@ -14,8 +14,9 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("https://biogurt.vercel.app", "http://localhost:8080")
+                        .allowedOrigins("https://biogurt.vercel.app", "http://localhost:3000", "http://localhost:5000")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedHeaders("*")
                         .allowCredentials(true);
             }
         };
