@@ -2,6 +2,7 @@ package br.com.biogurt.controller;
 
 import br.com.biogurt.dto.ContatoDTO;
 import br.com.biogurt.service.ContatoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,7 @@ public class ContatoController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> receberContato(@RequestBody ContatoDTO dto) {
+    public ResponseEntity<Void> receberContato(@RequestBody @Valid ContatoDTO dto) {
         service.processarContato(dto);
         return ResponseEntity.ok().build();
     }
