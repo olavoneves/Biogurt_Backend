@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/contato")
@@ -24,13 +25,15 @@ public class ContatoController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<Void> receberContato(@RequestBody @Valid ContatoDTO dto) {
-        System.out.println("REQUISIÇÃO POST RECEBIDA: " + dto);
+    public ResponseEntity receberContato(@RequestBody @Valid ContatoDTO dto) {
         service.processarContato(dto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(Map.of(
+                "message", "Contato enviado com sucesso",
+                "status", "ok"
+        ));
     }
 
-    @GetMapping
+    @GetMapping("/listar")
     public List<Contato> listarContatos() {
         return service.listarContatos();
     }
