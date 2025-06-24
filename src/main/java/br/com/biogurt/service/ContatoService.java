@@ -6,6 +6,8 @@ import br.com.biogurt.repository.ContatoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ContatoService {
 
@@ -21,5 +23,9 @@ public class ContatoService {
     public void processarContato(ContatoDTO dto) {
         Contato contato = repository.save(dto.toEntity());
         emailService.enviarEmail(dto); // envia o email com os dados
+    }
+
+    public List<Contato> listarContatos() {
+        return repository.findAll();
     }
 }
