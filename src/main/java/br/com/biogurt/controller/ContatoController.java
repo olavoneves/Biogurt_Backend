@@ -25,6 +25,7 @@ public class ContatoController {
     @PostMapping
     @Transactional
     public ResponseEntity<Void> receberContato(@RequestBody @Valid ContatoDTO dto) {
+        System.out.println("REQUISIÇÃO POST RECEBIDA: " + dto);
         service.processarContato(dto);
         return ResponseEntity.ok().build();
     }
