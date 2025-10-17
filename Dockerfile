@@ -1,15 +1,33 @@
-FROM eclipse-temurin:21-jdk
+# ---- Etapa 1: Build ----
+FROM maven:3.9.8-eclipse-temurin-17 AS builder
 
-WORKDIR /biogurt
+# Define o diretório de trabalho
+WORKDIR /app
 
-# Copia o .jar gerado da etapa de build
-COPY --from=build /biogurt/target/*.jar biogurt-0.0.1-SNAPSHOT.jar
+# Copia o pom.xml e baixa dependências
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
 
-# Expõe a porta usada pela aplicação
+# Copia o código-fonte
+COPY src ./src
+
+# Compila e empacota o projeto
+RUN mvn clean package -DskipTests
+
+# ---- Etapa 2: Runtime ----
+FROM eclipse-temurin:17-jdk
+
+# Define diretório de trabalho
+WORKDIR /app
+
+# Copia o JAR da etapa de build
+COPY --from=builder /app/target/*.jar app.jar
+
+# Expõe a porta padrão do Spring Boot
 EXPOSE 8080
 
-# Define variáveis de ambiente (Render também pode sobrescrever)
+# Variável de ambiente (Render também usa)
 ENV SPRING_PROFILES_ACTIVE=prod
 
-# Comando para iniciar o app
-ENTRYPOINT ["java", "-jar", "biogurt-0.0.1-SNAPSHOT.jar"]
+# Comando de inicialização
+ENTRYPOINT ["java", "-jar", "app.jar"]
